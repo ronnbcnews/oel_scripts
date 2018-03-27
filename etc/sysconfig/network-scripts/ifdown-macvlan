@@ -1,0 +1,90 @@
+#!/bin/bash
+# Network Interface Configuration System
+# Copyright (c) 1996-2009 Red Hat, Inc. all rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License, version 2,
+# as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+. /etc/init.d/functions
+
+cd /etc/sysconfig/network-scripts
+. ./network-functions
+
+[ -f ../network ] && . ../network
+
+CONFIG=${1}
+
+source_config
+
+. /etc/sysconfig/network
+
+# Check to make sure the device is actually up
+#check_device_down ${DEVICE} && [ "$BOOTPROTO" != "dhcp" -a "$BOOTPROTO" != "bootp" ] && exit 0
+
+[ -n "$(pidof -x dhclient)" ] && {
+for VER in "" 6 ; do
+    if [ -f "/var/run/dhclient$VER-${DEVICE}.pid" ]; then
+        dhcpid=$(cat /var/run/dhclient$VER-${DEVICE}.pid)
+        generate_lease_file_name $VER
+        if is_true "$DHCPRELEASE";  then
+            /sbin/dhclient -r -lf ${LEASEFILE} -pf /var/run/dhclient$VER-${DEVICE}.pid ${DEVICE} >/dev/null 2>&1
+            retcode=$?
+        else
+            kill $dhcpid >/dev/null 2>&1
+            retcode=$?
+            reason=STOP$VER interface=${DEVICE} /sbin/dhclient-script
+        fi
+        if [ -f "/var/run/dhclient$VER-${DEVICE}.pid" ]; then
+            rm -f /var/run/dhclient$VER-${DEVICE}.pid
+            kill $dhcpid >/dev/null 2>&1
+        fi  
+    fi
+done
+}  
+# we can't just delete the configured address because that address
+# may have been changed in the config file since the device was
+# brought up.  Flush all addresses associated with this
+# instance instead.
+if [ -f "/sys/class/net/${REALDEVICE}" ]; then
+    LABEL=
+    if [ "${REALDEVICE}" != "${DEVICE}" ]; then
+        LABEL="label ${DEVICE}"
+    fi
+    if [ "${REALDEVICE}" = "lo" ]; then
+        TIMEOUT=""
+        [ -x /usr/bin/timeout ] && TIMEOUT="/usr/bin/timeout --signal=SIGQUIT 4"
+        $TIMEOUT ip addr flush dev ${REALDEVICE} ${LABEL} scope global 2>/dev/null
+        $TIMEOUT ip addr flush dev ${REALDEVICE} ${LABEL} scope host 2>/dev/null
+    else
+        ip addr flush dev ${REALDEVICE} ${LABEL} scope global 2>/dev/null
+        ip -4 addr flush dev ${REALDEVICE} ${LABEL} scope host 2>/dev/null
+    fi
+
+    if [ "${REALDEVICE}" = "${DEVICE}" ]; then
+        ip link set dev ${DEVICE} down 2>/dev/null
+    fi
+fi
+[ "$retcode" = "0" ] && retcode=$?
+
+if [ "${TYPE}" = "macvlan" ]; then
+    [[ ${DEVICE} == mac* ]] 
+    ip link del ${DEVICE} >/dev/null
+fi
+
+if [ "$retcode" = 0 ] ; then
+    /etc/sysconfig/network-scripts/ifdown-post $CONFIG
+    # do NOT use $? because ifdown should return whether or not
+    # the interface went down.
+fi
+
+exit $retcode

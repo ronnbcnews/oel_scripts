@@ -1,0 +1,13 @@
+TYPE="macvlan"
+LINKTYPE="macvtap"
+BOOTPROTO="none"
+NAME="macvtap0"
+DEVICE="macvtap0"
+MASTER="eth0"
+ONBOOT="yes"
+MODE=bridge
+NM_CONTROLLED=no
+USERCTL=no
+IPADDR=x.x.x.x
+NETMASK=x.x.x.x
+GATEWAY=x.x.x.x
