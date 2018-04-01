@@ -13,3 +13,8 @@ rpm -ihv kernel-main-4.9.43-3.el7.src.rpm
 ```
 make bcmrpi3_defconfig
 ```
+
+4. add custom version string
+```
+export EXTRAVERSION=-pipi
+```
