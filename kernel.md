@@ -2,7 +2,7 @@ kernel.md
 
 1. fetch kernel source
 ```
-yum -y installl yum-utils make gcc bc
+yum -y installl yum-utils make gcc bc ncurses-devel
 yumdownloader --source kernel-main-4.9.43-3.el7.aarch64
 ```
 2. install source
