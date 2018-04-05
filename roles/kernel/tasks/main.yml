@@ -1,0 +1,22 @@
+---
+
+- name: install support for building a new kernel
+  yum:
+    name: {{ item.name }}
+    state: {{ item.state }}
+  with_items:
+    - { name: gcc, state: latest }
+    - { name: make, state: latest }
+    - { name: bison, state: latest }
+    - { name: bc, state: latest }
+    - { name: rpm-build, state: latest }
+    - { name: xfsprogs, state: latest }
+    - { name: e2fsprogs, state: latest }
+    - { name: lvm2, state: latest }
+    - { name: bzip2, state: latest }
+    - { name: yum-utils, state: latest }
+    - { name: sysfsutils, state: latest }
+    - { name: sysstat, state: latest }
+    - { name: strace, state: latest }
+  when:
+    - ansible_os_family == "RedHat"

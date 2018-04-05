@@ -1,0 +1,28 @@
+---
+- name: install support for lxc
+  yum:
+    name: {{ item.name }}
+    state: {{ item.state }}
+  with_items:
+    - { name: lxc, state: latest }
+    - { name: lxc-libs, state: latest }
+    - { name: wget, state: latest }
+
+- name: Update Oracle LXC Template with aarch64(rpi3) support
+  copy:
+    src: lxc-oracle
+    dest: /usr/share/lxc/templates/lxc-oracle
+    owner: root
+    group: root
+    mode: 0755
+    backup: yes
+    when:
+      - "{{ oel_install_lxc }}" == true
+
+- name: be sure ntp is configured
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+  notify:
+    - restart ntpd
+  tags: ntp
