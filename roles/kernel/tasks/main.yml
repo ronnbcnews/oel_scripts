@@ -18,5 +18,6 @@
     - { name: sysfsutils, state: latest }
     - { name: sysstat, state: latest }
     - { name: strace, state: latest }
+    - { name: dmidecode, state: latest }
   when:
     - ansible_os_family == "RedHat"
