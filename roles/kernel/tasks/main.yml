@@ -6,6 +6,7 @@
     state: {{ item.state }}
   with_items:
     - { name: gcc, state: latest }
+    - { name: binutils, state: latest }
     - { name: make, state: latest }
     - { name: bison, state: latest }
     - { name: bc, state: latest }
