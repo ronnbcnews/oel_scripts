@@ -13,6 +13,7 @@
     - { name: rpm-build, state: latest }
     - { name: xfsprogs, state: latest }
     - { name: e2fsprogs, state: latest }
+    - { name: dosfstools, state: latest }
     - { name: lvm2, state: latest }
     - { name: bzip2, state: latest }
     - { name: yum-utils, state: latest }
