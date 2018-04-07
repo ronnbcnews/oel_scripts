@@ -18,3 +18,31 @@
     - { name: strace, state: latest }
   when:
     - ansible_os_family == "RedHat"
+
+- name: setup rpmbuild env
+  lineinfile:
+    path: /tmp/testfile
+    line: "%_topdir {{ kernel_source_dir }}/rpmbuild"
+    create: yes
+    mode: 0644
+
+- name: setup rpmbuild directories
+  file:
+    path: "{{ kernel_source_dir }}/rpmbuild/{{ item.name }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - { name: BUILD }
+    - { name: RPMS }
+    - { name: SOURCE }
+    - { name: SRPMS }
+    - { name: SPECS }
+
+- name: fetch latest kernel sources
+  command: "yumdownloader --source {{ item.name }}"
+    chdir: "{{ kernel_source_dir }}"
+  with_items:
+    - { name: kernel-main }
+    - { name: kernel-uek }
