@@ -1,0 +1,19 @@
+---
+
+- name: install support for managing filesystems
+  yum:
+    name: {{ item.name }}
+    state: {{ item.state }}
+  with_items:
+    - { name: parted, state: latest }
+    - { name: xfsprogs, state: latest }
+    - { name: e2fsprogs, state: latest }
+    - { name: lvm2, state: latest }
+    - { name: psmisc, state: latest }
+    - { name: bzip2, state: latest }
+    - { name: yum-utils, state: latest }
+    - { name: sysfsutils, state: latest }
+    - { name: sysstat, state: latest }
+    - { name: strace, state: latest }
+  when:
+    - ansible_os_family == "RedHat"
