@@ -1,22 +1,19 @@
 ---
 
-- name: install lxc
-  yum:
-    name: {{ item.name }}
-    state: {{ item.state }}
-  with_items:
-    - { name: lxc, state: latest }
-    - { name: lxc-libs, state: latest }
-  when:
-    - ansible_os_family == "RedHat"
-
-- name: Update Oracle LXC Template with aarch64(rpi3) support
+- name: install macvlan ifup/down scripts
   copy:
-    src: lxc-oracle
-    dest: /usr/share/lxc/templates/lxc-oracle
+    src: "{{ item.name }}"
+    dest: "/etc/sysconfig/network-scripts/{{ item.dst }}"
     owner: root
     group: root
-    mode: 0755
+    mode: "{{ item.mode }}"
     backup: yes
+  yum:
+    src: "{{ item.name }}"
+    state: "{{ item.name }}"
+  with_items:
+    - { src: ifup-macvlan, dst: ifup-macvlan, mode: 0755 }
+    - { src: ifdown-macvlan, dst: ifdown-macvlan, mode: 0755 }
+    - { src: ifcfg-macvlan0.example, dst: ifcfg-macvlan0.example, mode: 0644 }
   when:
-    - ansible_os_family == "RedHat" and "{{ lxc_install }}" == true
+    - ansible_os_family == "RedHat"
