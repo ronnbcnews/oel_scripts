@@ -1,0 +1,19 @@
+---
+
+- name: install support for selinux
+  yum:
+    name: {{ item.name }}
+    state: {{ item.state }}
+  with_items:
+    - { name: selinux-policy-mls, state: latest }
+    - { name: policycoreutils-newrole, state: latest }
+    - { name: mcstrans, state: latest }
+    - { name: selinux-policy-targeted, state: latest }
+    - { name: setools, state: latest }
+    - { name: checkpolicy, state: latest }
+    - { name: libselinux-utils, state: latest }
+    - { name: policycoreutils, state: latest }
+    - { name: selinux-policy-minimum, state: latest }
+    - { name: selinux-policy, state: latest }
+  when:
+    - ansible_os_family == "RedHat"
