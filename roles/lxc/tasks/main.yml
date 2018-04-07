@@ -8,6 +8,7 @@
     - { name: lxc, state: latest }
     - { name: lxc-libs, state: latest }
     - { name: wget, state: latest }
+    - { name: bridge-utils, state: latest }
 
 - name: Update Oracle LXC Template with aarch64(rpi3) support
   copy:

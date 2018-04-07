@@ -11,5 +11,7 @@
     - { name: lvm2, state: latest }
     - { name: psmisc, state: latest }
     - { name: sysstat, state: latest }
+    - { name: dump, state: latest }
+    - { name: dosfstools, state: latest }
   when:
     - ansible_os_family == "RedHat"
