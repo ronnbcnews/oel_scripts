@@ -9,6 +9,7 @@
     - { name: binutils, state: latest }
     - { name: make, state: latest }
     - { name: bison, state: latest }
+    - { name: ncurses-devel, state: latest }
     - { name: bc, state: latest }
     - { name: rpm-build, state: latest }
     - { name: bzip2, state: latest }
