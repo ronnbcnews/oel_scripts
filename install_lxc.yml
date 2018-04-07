@@ -1,0 +1,10 @@
+---
+
+- name: Installing LXC support
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - fstools
+    - macvlan
+    - lxc
+

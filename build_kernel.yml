@@ -1,0 +1,8 @@
+---
+
+- name: Installing support for building Linux Kernel
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - fstools
+    - kernel
