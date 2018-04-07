@@ -13,5 +13,6 @@
     - { name: sysstat, state: latest }
     - { name: dump, state: latest }
     - { name: dosfstools, state: latest }
+    - { name: targetcli, state: latest }
   when:
     - ansible_os_family == "RedHat"
