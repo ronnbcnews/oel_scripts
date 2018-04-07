@@ -10,10 +10,6 @@
     - { name: e2fsprogs, state: latest }
     - { name: lvm2, state: latest }
     - { name: psmisc, state: latest }
-    - { name: bzip2, state: latest }
-    - { name: yum-utils, state: latest }
-    - { name: sysfsutils, state: latest }
     - { name: sysstat, state: latest }
-    - { name: strace, state: latest }
   when:
     - ansible_os_family == "RedHat"
