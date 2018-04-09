@@ -607,6 +607,14 @@ container_rootfs_clone()
     fi
 }
 
+disable_yum_docs()
+{
+    if [ -f "$container_rootfs/etc/yum.conf" ]; then
+        echo "tsflags=nodocs" >> $container_rootfs/etc/yum.conf
+        echo "Disabled yum from installing documentation from rpms"
+    fi
+}
+
 container_rootfs_repo_create()
 {
     echo "# LXC generated .repo file" >$1
@@ -826,6 +834,7 @@ container_rootfs_create()
         # if installing from a baseurl, create a .repo that the container
         # can use to update to _latest from http://public-yum.oracle.com
         if [ -n "$baseurl" ]; then
+            disable_yum_docs
             container_rootfs_repo_create \
                 "$container_rootfs/etc/yum.repos.d/public-yum-"$latestL""$container_release_major".repo" \
                 $latest_L""$container_release_major"_latest" \
