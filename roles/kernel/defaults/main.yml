@@ -1,5 +1,5 @@
 ---
 
-kernel_version: 4.9.43
+kernel_version: 4.14.32
 kernel_type: main
-kernel_source_dir: /usr/src
+kernel_source_dir: /usr/src/rpmbuild
