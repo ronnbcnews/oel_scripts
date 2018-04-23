@@ -93,12 +93,11 @@ for variant in %{variants}; do
 done
 rm -rf %{buildroot}/lib/firmware
 
-cp %{buildroot}/boot/dtb-%{knl_config_version}/broadcom/bcm2837-rpi-3-b.dtb \
-	%{SOURCE2} \
+cp %{SOURCE2} \
    %{buildroot}/boot/dtb-%{knl_config_version}/
 
 %post
-version="%{config_version}"
+version="%{knl_config_version}"
 kernel="vmlinux-%{knl_config_version}"
 initrd="initramfs-%{knl_config_version}.img"
 title="kernel-%{knl_config_version}"
@@ -152,4 +151,4 @@ rm -f "/boot/$initrd"
 - Initial build
 - commit is 84a1781639429747b894f5121476b514a6a20651
 
-# vim: ts=2 sw=2
+# vim: ts=2 sw=2 
