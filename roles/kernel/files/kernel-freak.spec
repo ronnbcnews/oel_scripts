@@ -152,4 +152,4 @@ rm -f "/boot/$initrd"
 - Initial build
 - commit is 84a1781639429747b894f5121476b514a6a20651
 
-# vim: ts=2 sw=2 noindent
+# vim: ts=2 sw=2
