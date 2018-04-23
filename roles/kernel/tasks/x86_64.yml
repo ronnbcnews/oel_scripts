@@ -1,0 +1,15 @@
+---
+
+- name: install support for building a new kernel
+  yum:
+    name: {{ item.name }}
+    state: {{ item.state }}
+  with_items:
+    - { name: gcc-c++-aarch64-linux-gnu, state: latest }
+    - { name: binutils-aarch64-linux-gnu, state: latest }
+    - { name: gcc-aarch64-linux-gnu, state: latest }
+  when:
+    - ansible_os_family == "RedHat"
+
+
+# vim: ts=2 sw=2
